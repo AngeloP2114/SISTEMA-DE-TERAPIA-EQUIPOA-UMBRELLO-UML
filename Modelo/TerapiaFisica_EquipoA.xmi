@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='utf-8'?>
+<XMI xmlns:UML="http://schema.omg.org/spec/UML/1.3" xmi.version="1.2" timestamp="2026-07-22T07:26:22" verified="false">
+  <XMI.header>
+    <XMI.metamodel xmi.name="UML" xmi.version="1.3" href="UML.xml" />
+    <XMI.documentation>
+      <XMI.exporter>umbrello uml modeller http://uml.sf.net</XMI.exporter>
+      <XMI.exporterVersion>1.7.4</XMI.exporterVersion>
+      <XMI.exporterEncoding>UnicodeUTF8</XMI.exporterEncoding>
+    </XMI.documentation>
+  </XMI.header>
+  <XMI.content>
+    <UML:Model xmi.id="m1" name="SICST - Sistema de Terapia Fisica" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false">
+      <UML:Namespace.ownedElement>
+        <UML:Model xmi.id="Logical View" name="Logical View" namespace="m1" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false">
+          <UML:Namespace.ownedElement>
+            <UML:Package xmi.id="Datatypes" name="Datatypes" namespace="Logical View" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false">
+              <UML:Namespace.ownedElement>
+                <UML:DataType xmi.id="dt_int" name="int" namespace="Datatypes" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false" />
+                <UML:DataType xmi.id="dt_string" name="string" namespace="Datatypes" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false" />
+                <UML:DataType xmi.id="dt_bool" name="bool" namespace="Datatypes" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false" />
+                <UML:DataType xmi.id="dt_double" name="double" namespace="Datatypes" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false" />
+                <UML:DataType xmi.id="dt_datetime" name="DateTime" namespace="Datatypes" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false" />
+                <UML:DataType xmi.id="dt_void" name="void" namespace="Datatypes" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false" />
+              </UML:Namespace.ownedElement>
+            </UML:Package>
+            <UML:Class xmi.id="c_usuario" name="Usuario" namespace="Logical View" visibility="public" isSpecification="false" isAbstract="true" isRoot="false" isLeaf="false">
+              <UML:Classifier.feature>
+                <UML:Attribute xmi.id="att_1" name="idUsuario" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_2" name="nombres" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Attribute xmi.id="att_3" name="apellidos" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Attribute xmi.id="att_4" name="correo" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Attribute xmi.id="att_5" name="clave" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Operation xmi.id="op_6" name="iniciarSesion" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_7" type="dt_bool" kind="return" />
+                    <UML:Parameter xmi.id="par_8" name="correo" visibility="private" isSpecification="false" type="dt_string" />
+                    <UML:Parameter xmi.id="par_9" name="clave" visibility="private" isSpecification="false" type="dt_string" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_10" name="cerrarSesion" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_11" type="dt_void" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_12" name="obtenerNombreCompleto" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_13" type="dt_string" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+              </UML:Classifier.feature>
+            </UML:Class>
+            <UML:Class xmi.id="c_paciente" name="Paciente" namespace="Logical View" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false">
+              <UML:Classifier.feature>
+                <UML:Attribute xmi.id="att_14" name="idPaciente" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_15" name="edad" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_16" name="diagnostico" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Attribute xmi.id="att_17" name="telefono" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Operation xmi.id="op_18" name="registrarPaciente" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_19" type="dt_void" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_20" name="actualizarDiagnostico" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_21" type="dt_void" kind="return" />
+                    <UML:Parameter xmi.id="par_22" name="nuevoDiagnostico" visibility="private" isSpecification="false" type="dt_string" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_23" name="consultarProgreso" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_24" type="dt_double" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+              </UML:Classifier.feature>
+            </UML:Class>
+            <UML:Class xmi.id="c_fisioterapeuta" name="Fisioterapeuta" namespace="Logical View" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false">
+              <UML:Classifier.feature>
+                <UML:Attribute xmi.id="att_25" name="idFisioterapeuta" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_26" name="especialidad" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Attribute xmi.id="att_27" name="numeroLicencia" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Operation xmi.id="op_28" name="evaluarPaciente" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_29" type="dt_void" kind="return" />
+                    <UML:Parameter xmi.id="par_30" name="paciente" visibility="private" isSpecification="false" type="c_paciente" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_31" name="crearPlanTerapia" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_32" type="c_plan" kind="return" />
+                    <UML:Parameter xmi.id="par_33" name="paciente" visibility="private" isSpecification="false" type="c_paciente" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_34" name="actualizarPlan" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_35" type="dt_void" kind="return" />
+                    <UML:Parameter xmi.id="par_36" name="plan" visibility="private" isSpecification="false" type="c_plan" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+              </UML:Classifier.feature>
+            </UML:Class>
+            <UML:Class xmi.id="c_plan" name="PlanTerapia" namespace="Logical View" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false">
+              <UML:Classifier.feature>
+                <UML:Attribute xmi.id="att_37" name="idPlan" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_38" name="fechaInicio" visibility="private" isSpecification="false" type="dt_datetime" />
+                <UML:Attribute xmi.id="att_39" name="fechaFin" visibility="private" isSpecification="false" type="dt_datetime" />
+                <UML:Attribute xmi.id="att_40" name="objetivo" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Attribute xmi.id="att_41" name="estado" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Operation xmi.id="op_42" name="crearPlan" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_43" type="dt_void" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_44" name="agregarEjercicio" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_45" type="dt_void" kind="return" />
+                    <UML:Parameter xmi.id="par_46" name="ejercicio" visibility="private" isSpecification="false" type="c_ejercicio" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_47" name="cambiarEstado" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_48" type="dt_void" kind="return" />
+                    <UML:Parameter xmi.id="par_49" name="nuevoEstado" visibility="private" isSpecification="false" type="dt_string" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_50" name="calcularDuracionDias" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_51" type="dt_int" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+              </UML:Classifier.feature>
+            </UML:Class>
+            <UML:Class xmi.id="c_ejercicio" name="Ejercicio" namespace="Logical View" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false">
+              <UML:Classifier.feature>
+                <UML:Attribute xmi.id="att_52" name="idEjercicio" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_53" name="nombre" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Attribute xmi.id="att_54" name="descripcion" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Attribute xmi.id="att_55" name="repeticiones" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_56" name="duracionMinutos" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Operation xmi.id="op_57" name="actualizarRepeticiones" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_58" type="dt_void" kind="return" />
+                    <UML:Parameter xmi.id="par_59" name="cantidad" visibility="private" isSpecification="false" type="dt_int" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_60" name="actualizarDuracion" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_61" type="dt_void" kind="return" />
+                    <UML:Parameter xmi.id="par_62" name="minutos" visibility="private" isSpecification="false" type="dt_int" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_63" name="obtenerDescripcion" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_64" type="dt_string" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+              </UML:Classifier.feature>
+            </UML:Class>
+            <UML:Class xmi.id="c_sesion" name="SesionTerapia" namespace="Logical View" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false">
+              <UML:Classifier.feature>
+                <UML:Attribute xmi.id="att_65" name="idSesion" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_66" name="fecha" visibility="private" isSpecification="false" type="dt_datetime" />
+                <UML:Attribute xmi.id="att_67" name="duracionMinutos" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_68" name="observaciones" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Attribute xmi.id="att_69" name="completada" visibility="private" isSpecification="false" type="dt_bool" />
+                <UML:Operation xmi.id="op_70" name="registrarSesion" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_71" type="dt_void" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_72" name="finalizarSesion" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_73" type="dt_void" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_74" name="calcularProgreso" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_75" type="dt_double" kind="return" />
+                    <UML:Parameter xmi.id="par_76" name="sesionesRealizadas" visibility="private" isSpecification="false" type="dt_int" />
+                    <UML:Parameter xmi.id="par_77" name="sesionesPlanificadas" visibility="private" isSpecification="false" type="dt_int" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_78" name="obtenerObservaciones" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_79" type="dt_string" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+              </UML:Classifier.feature>
+            </UML:Class>
+            <UML:Class xmi.id="c_evaluacion" name="EvaluacionProgreso" namespace="Logical View" visibility="public" isSpecification="false" isAbstract="false" isRoot="false" isLeaf="false">
+              <UML:Classifier.feature>
+                <UML:Attribute xmi.id="att_80" name="idEvaluacion" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_81" name="fechaEvaluacion" visibility="private" isSpecification="false" type="dt_datetime" />
+                <UML:Attribute xmi.id="att_82" name="nivelDolor" visibility="private" isSpecification="false" type="dt_int" />
+                <UML:Attribute xmi.id="att_83" name="movilidad" visibility="private" isSpecification="false" type="dt_double" />
+                <UML:Attribute xmi.id="att_84" name="fuerzaMuscular" visibility="private" isSpecification="false" type="dt_double" />
+                <UML:Attribute xmi.id="att_85" name="comentario" visibility="private" isSpecification="false" type="dt_string" />
+                <UML:Operation xmi.id="op_86" name="registrarResultado" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_87" type="dt_void" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_88" name="calcularPromedio" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_89" type="dt_double" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+                <UML:Operation xmi.id="op_90" name="generarComentario" visibility="public" isSpecification="false" isLeaf="false" isRoot="false" isAbstract="false" isQuery="false">
+                  <UML:BehavioralFeature.parameter>
+                    <UML:Parameter xmi.id="ret_91" type="dt_string" kind="return" />
+                  </UML:BehavioralFeature.parameter>
+                </UML:Operation>
+              </UML:Classifier.feature>
+            </UML:Class>
+            <UML:Generalization xmi.id="g_paciente_usuario" name="" namespace="Logical View" visibility="public" isSpecification="false" discriminator="" child="c_paciente" parent="c_usuario" />
+            <UML:Generalization xmi.id="g_fisio_usuario" name="" namespace="Logical View" visibility="public" isSpecification="false" discriminator="" child="c_fisioterapeuta" parent="c_usuario" />
+            <UML:Association xmi.id="a_paciente_plan" name="posee" namespace="Logical View" visibility="public" isSpecification="false">
+              <UML:Association.connection>
+                <UML:AssociationEnd xmi.id="role_92" name="paciente" visibility="public" isSpecification="false" type="c_paciente" multiplicity="1" aggregation="none" isNavigable="true" changeability="changeable" />
+                <UML:AssociationEnd xmi.id="role_93" name="planesTerapia" visibility="public" isSpecification="false" type="c_plan" multiplicity="0..*" aggregation="none" isNavigable="true" changeability="changeable" />
+              </UML:Association.connection>
+            </UML:Association>
+            <UML:Association xmi.id="a_fisio_plan" name="disena" namespace="Logical View" visibility="public" isSpecification="false">
+              <UML:Association.connection>
+                <UML:AssociationEnd xmi.id="role_94" name="fisioterapeuta" visibility="public" isSpecification="false" type="c_fisioterapeuta" multiplicity="1" aggregation="none" isNavigable="true" changeability="changeable" />
+                <UML:AssociationEnd xmi.id="role_95" name="planesDisenados" visibility="public" isSpecification="false" type="c_plan" multiplicity="0..*" aggregation="none" isNavigable="true" changeability="changeable" />
+              </UML:Association.connection>
+            </UML:Association>
+            <UML:Association xmi.id="a_plan_ejercicio" name="incluye" namespace="Logical View" visibility="public" isSpecification="false">
+              <UML:Association.connection>
+                <UML:AssociationEnd xmi.id="role_96" name="planTerapia" visibility="public" isSpecification="false" type="c_plan" multiplicity="1" aggregation="aggregate" isNavigable="true" changeability="changeable" />
+                <UML:AssociationEnd xmi.id="role_97" name="ejercicios" visibility="public" isSpecification="false" type="c_ejercicio" multiplicity="1..*" aggregation="none" isNavigable="true" changeability="changeable" />
+              </UML:Association.connection>
+            </UML:Association>
+            <UML:Association xmi.id="a_plan_sesion" name="programa" namespace="Logical View" visibility="public" isSpecification="false">
+              <UML:Association.connection>
+                <UML:AssociationEnd xmi.id="role_98" name="planTerapia" visibility="public" isSpecification="false" type="c_plan" multiplicity="1" aggregation="composite" isNavigable="true" changeability="changeable" />
+                <UML:AssociationEnd xmi.id="role_99" name="sesiones" visibility="public" isSpecification="false" type="c_sesion" multiplicity="0..*" aggregation="none" isNavigable="true" changeability="changeable" />
+              </UML:Association.connection>
+            </UML:Association>
+            <UML:Association xmi.id="a_paciente_sesion" name="realiza" namespace="Logical View" visibility="public" isSpecification="false">
+              <UML:Association.connection>
+                <UML:AssociationEnd xmi.id="role_100" name="paciente" visibility="public" isSpecification="false" type="c_paciente" multiplicity="1" aggregation="none" isNavigable="true" changeability="changeable" />
+                <UML:AssociationEnd xmi.id="role_101" name="sesionesRealizadas" visibility="public" isSpecification="false" type="c_sesion" multiplicity="0..*" aggregation="none" isNavigable="true" changeability="changeable" />
+              </UML:Association.connection>
+            </UML:Association>
+            <UML:Association xmi.id="a_sesion_eval" name="genera" namespace="Logical View" visibility="public" isSpecification="false">
+              <UML:Association.connection>
+                <UML:AssociationEnd xmi.id="role_102" name="sesionTerapia" visibility="public" isSpecification="false" type="c_sesion" multiplicity="1" aggregation="composite" isNavigable="true" changeability="changeable" />
+                <UML:AssociationEnd xmi.id="role_103" name="evaluacionProgreso" visibility="public" isSpecification="false" type="c_evaluacion" multiplicity="0..1" aggregation="none" isNavigable="true" changeability="changeable" />
+              </UML:Association.connection>
+            </UML:Association>
+            <UML:Association xmi.id="a_fisio_sesion" name="atiende" namespace="Logical View" visibility="public" isSpecification="false">
+              <UML:Association.connection>
+                <UML:AssociationEnd xmi.id="role_104" name="fisioterapeuta" visibility="public" isSpecification="false" type="c_fisioterapeuta" multiplicity="1" aggregation="none" isNavigable="true" changeability="changeable" />
+                <UML:AssociationEnd xmi.id="role_105" name="sesionesAtendidas" visibility="public" isSpecification="false" type="c_sesion" multiplicity="0..*" aggregation="none" isNavigable="true" changeability="changeable" />
+              </UML:Association.connection>
+            </UML:Association>
+          </UML:Namespace.ownedElement>
+          <XMI.extension xmi.extender="umbrello">
+            <diagrams>
+              <diagram xmi.id="d_clases" name="DiagramaClases_TerapiaFisica" type="1" documentation="Diagrama de clases final, completo y ordenado para generar codigo C#" fillcolor="#fffdf0" linecolor="#000000" linewidth="0" usefillcolor="1" font="Segoe UI,9,-1,5,50,0,0,0,0,0" showattsig="1" showatts="1" showopsig="1" showops="1" showpackage="0" showscope="1" showstereotype="0" localid="100" showgrid="0" snapgrid="0" snapcsgrid="0" snapx="10" snapy="10" zoom="50" canvasheight="1450" canvaswidth="2200">
+                <widgets>
+                  <classwidget xmi.id="c_usuario" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="1" x="850" y="30" width="500" height="210" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" showoperations="1" showpubliconly="0" showopsigs="601" showpackage="0" showscope="1" showattributes="1" showattsigs="601" drawascircle="0" />
+                  <classwidget xmi.id="c_paciente" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="1" x="80" y="320" width="470" height="210" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" showoperations="1" showpubliconly="0" showopsigs="601" showpackage="0" showscope="1" showattributes="1" showattsigs="601" drawascircle="0" />
+                  <classwidget xmi.id="c_fisioterapeuta" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="1" x="1600" y="320" width="520" height="210" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" showoperations="1" showpubliconly="0" showopsigs="601" showpackage="0" showscope="1" showattributes="1" showattsigs="601" drawascircle="0" />
+                  <classwidget xmi.id="c_plan" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="1" x="820" y="400" width="520" height="260" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" showoperations="1" showpubliconly="0" showopsigs="601" showpackage="0" showscope="1" showattributes="1" showattsigs="601" drawascircle="0" />
+                  <classwidget xmi.id="c_ejercicio" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="1" x="250" y="800" width="500" height="240" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" showoperations="1" showpubliconly="0" showopsigs="601" showpackage="0" showscope="1" showattributes="1" showattsigs="601" drawascircle="0" />
+                  <classwidget xmi.id="c_sesion" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="1" x="1450" y="800" width="550" height="260" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" showoperations="1" showpubliconly="0" showopsigs="601" showpackage="0" showscope="1" showattributes="1" showattsigs="601" drawascircle="0" />
+                  <classwidget xmi.id="c_evaluacion" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="1" x="1450" y="1150" width="550" height="250" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" showoperations="1" showpubliconly="0" showopsigs="601" showpackage="0" showscope="1" showattributes="1" showattsigs="601" drawascircle="0" />
+                </widgets>
+                <messages />
+                <associations>
+                  <assocwidget xmi.id="g_paciente_usuario" linecolor="none" linewidth="none" type="500" widgetaid="c_paciente" widgetbid="c_usuario" indexa="1" indexb="1" totalcounta="1" totalcountb="1">
+                    <linepath>
+                      <startpoint startx="315" starty="320" />
+                      <endpoint endx="980" endy="240" />
+                      <point x="315" y="280" />
+                      <point x="980" y="280" />
+                    </linepath>
+                  </assocwidget>
+                  <assocwidget xmi.id="g_fisio_usuario" linecolor="none" linewidth="none" type="500" widgetaid="c_fisioterapeuta" widgetbid="c_usuario" indexa="1" indexb="1" totalcounta="1" totalcountb="1">
+                    <linepath>
+                      <startpoint startx="1860" starty="320" />
+                      <endpoint endx="1220" endy="240" />
+                      <point x="1860" y="280" />
+                      <point x="1220" y="280" />
+                    </linepath>
+                  </assocwidget>
+                  <assocwidget xmi.id="a_paciente_plan" linecolor="none" linewidth="none" type="503" widgetaid="c_paciente" widgetbid="c_plan" indexa="1" indexb="1" totalcounta="1" totalcountb="1">
+                    <linepath>
+                      <startpoint startx="550" starty="420" />
+                      <endpoint endx="820" endy="480" />
+                      <point x="685" y="420" />
+                      <point x="685" y="480" />
+                    </linepath>
+                    <floatingtext xmi.id="ft_201" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="620" y="385" width="140" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="posee" pretext="" posttext="" role="703" />
+                    <floatingtext xmi.id="ft_202" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="515" y="395" width="55" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="1" pretext="" posttext="" role="701" />
+                    <floatingtext xmi.id="ft_203" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="785" y="455" width="65" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="0..*" pretext="" posttext="" role="702" />
+                  </assocwidget>
+                  <assocwidget xmi.id="a_fisio_plan" linecolor="none" linewidth="none" type="503" widgetaid="c_fisioterapeuta" widgetbid="c_plan" indexa="1" indexb="1" totalcounta="1" totalcountb="1">
+                    <linepath>
+                      <startpoint startx="1600" starty="420" />
+                      <endpoint endx="1340" endy="480" />
+                      <point x="1470" y="420" />
+                      <point x="1470" y="480" />
+                    </linepath>
+                    <floatingtext xmi.id="ft_211" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1415" y="385" width="140" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="disena" pretext="" posttext="" role="703" />
+                    <floatingtext xmi.id="ft_212" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1580" y="395" width="55" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="1" pretext="" posttext="" role="701" />
+                    <floatingtext xmi.id="ft_213" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1320" y="455" width="65" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="0..*" pretext="" posttext="" role="702" />
+                  </assocwidget>
+                  <assocwidget xmi.id="a_plan_ejercicio" linecolor="none" linewidth="none" type="501" widgetaid="c_plan" widgetbid="c_ejercicio" indexa="1" indexb="1" totalcounta="1" totalcountb="1">
+                    <linepath>
+                      <startpoint startx="820" starty="580" />
+                      <endpoint endx="750" endy="900" />
+                      <point x="785" y="580" />
+                      <point x="785" y="900" />
+                    </linepath>
+                    <floatingtext xmi.id="ft_221" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="690" y="720" width="140" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="incluye" pretext="" posttext="" role="703" />
+                    <floatingtext xmi.id="ft_222" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="800" y="555" width="55" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="1" pretext="" posttext="" role="701" />
+                    <floatingtext xmi.id="ft_223" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="715" y="875" width="65" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="1..*" pretext="" posttext="" role="702" />
+                  </assocwidget>
+                  <assocwidget xmi.id="a_plan_sesion" linecolor="none" linewidth="none" type="510" widgetaid="c_plan" widgetbid="c_sesion" indexa="1" indexb="1" totalcounta="1" totalcountb="1">
+                    <linepath>
+                      <startpoint startx="1340" starty="580" />
+                      <endpoint endx="1450" endy="890" />
+                      <point x="1395" y="580" />
+                      <point x="1395" y="890" />
+                    </linepath>
+                    <floatingtext xmi.id="ft_231" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1320" y="720" width="140" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="programa" pretext="" posttext="" role="703" />
+                    <floatingtext xmi.id="ft_232" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1310" y="555" width="55" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="1" pretext="" posttext="" role="701" />
+                    <floatingtext xmi.id="ft_233" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1420" y="865" width="65" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="0..*" pretext="" posttext="" role="702" />
+                  </assocwidget>
+                  <assocwidget xmi.id="a_paciente_sesion" linecolor="none" linewidth="none" type="503" widgetaid="c_paciente" widgetbid="c_sesion" indexa="1" indexb="1" totalcounta="1" totalcountb="1">
+                    <linepath>
+                      <startpoint startx="80" starty="470" />
+                      <endpoint endx="1450" endy="970" />
+                      <point x="30" y="470" />
+                      <point x="30" y="1100" />
+                      <point x="1380" y="1100" />
+                      <point x="1380" y="970" />
+                    </linepath>
+                    <floatingtext xmi.id="ft_241" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="690" y="1070" width="140" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="realiza" pretext="" posttext="" role="703" />
+                    <floatingtext xmi.id="ft_242" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="40" y="440" width="55" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="1" pretext="" posttext="" role="701" />
+                    <floatingtext xmi.id="ft_243" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1415" y="945" width="65" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="0..*" pretext="" posttext="" role="702" />
+                  </assocwidget>
+                  <assocwidget xmi.id="a_sesion_eval" linecolor="none" linewidth="none" type="510" widgetaid="c_sesion" widgetbid="c_evaluacion" indexa="1" indexb="1" totalcounta="1" totalcountb="1">
+                    <linepath>
+                      <startpoint startx="1725" starty="1060" />
+                      <endpoint endx="1725" endy="1150" />
+                    </linepath>
+                    <floatingtext xmi.id="ft_251" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1750" y="1090" width="140" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="genera" pretext="" posttext="" role="703" />
+                    <floatingtext xmi.id="ft_252" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1690" y="1055" width="55" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="1" pretext="" posttext="" role="701" />
+                    <floatingtext xmi.id="ft_253" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1690" y="1125" width="65" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="0..1" pretext="" posttext="" role="702" />
+                  </assocwidget>
+                  <assocwidget xmi.id="a_fisio_sesion" linecolor="none" linewidth="none" type="503" widgetaid="c_fisioterapeuta" widgetbid="c_sesion" indexa="1" indexb="1" totalcounta="1" totalcountb="1">
+                    <linepath>
+                      <startpoint startx="2120" starty="470" />
+                      <endpoint endx="2000" endy="950" />
+                      <point x="2170" y="470" />
+                      <point x="2170" y="950" />
+                    </linepath>
+                    <floatingtext xmi.id="ft_261" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="2025" y="915" width="140" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="atiende" pretext="" posttext="" role="703" />
+                    <floatingtext xmi.id="ft_262" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="2080" y="440" width="55" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="1" pretext="" posttext="" role="701" />
+                    <floatingtext xmi.id="ft_263" linecolor="none" linewidth="none" font="Segoe UI,10,-1,5,50,0,0,0,0,0" usefillcolor="0" x="1970" y="925" width="65" height="25" usesdiagramfillcolor="1" usesdiagramusefillcolor="1" fillcolor="none" isinstance="0" text="0..*" pretext="" posttext="" role="702" />
+                  </assocwidget>
+                </associations>
+              </diagram>
+            </diagrams>
+          </XMI.extension>
+        </UML:Model>
+      </UML:Namespace.ownedElement>
+    </UML:Model>
+  </XMI.content>
+  <XMI.extensions xmi.extender="umbrello">
+    <docsettings viewid="d_clases" documentation="Modelo final completo del Sistema de Terapia Fisica para generar clases C#" uniqueid="5000" />
+    <codegeneration>
+      <codegenerator language="C#" />
+    </codegeneration>
+  </XMI.extensions>
+</XMI>
