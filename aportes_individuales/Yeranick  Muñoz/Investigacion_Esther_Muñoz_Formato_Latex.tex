@@ -1,0 +1,304 @@
+\input{preambulo_formato_final}
+\begin{document}
+\CaratulaIndividual{INVESTIGACIÓN INDIVIDUAL - ESTHER MUÑOZ}{MUÑOZ QUIÑONEZ YERANICK ESTHER}{Fundamentación teórica, requisitos, comparación de herramientas, criterios éticos y fuentes científicas.}
+
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Resumen}
+Esta investigación desarrolla la fundamentación académica utilizada por el Equipo A para aplicar Ingeniería Dirigida por Modelos al Sistema Inteligente de Control y Seguimiento de Terapia Física. Se analizan los conceptos de MDE, MDA y MDD; los niveles CIM, PIM y PSM; las transformaciones modelo-a-modelo y modelo-a-texto; la función del metamodelado; la trazabilidad de requisitos y los desafíos de adopción industrial. Posteriormente, se relacionan dichos conceptos con el subsistema modelado y se justifica la selección de Umbrello UML Modeller frente a alternativas comerciales. La investigación también identifica los requisitos funcionales que sustentan las clases del diagrama, evalúa la utilidad de la herramienta para un proyecto académico y establece criterios éticos para comunicar con transparencia el alcance del código generado. La contribución de Esther proporciona el marco que permite interpretar la práctica no como un tutorial aislado, sino como una aplicación del desarrollo dirigido por modelos vinculada a los requisitos del PFC. Las fuentes utilizadas incluyen estándares OMG e ISO/IEC/IEEE y artículos científicos con DOI verificable, conforme a la rúbrica de evaluación.
+
+\section{Introducción}
+La complejidad de los sistemas de software ha impulsado estrategias que buscan elevar el nivel de abstracción y reducir la distancia entre los requisitos, el diseño y la implementación. La Ingeniería Dirigida por Modelos propone que los modelos sean artefactos centrales del proceso: expresan decisiones, pueden verificarse y sirven como entrada para transformaciones automatizadas. Esta visión contrasta con el uso meramente documental de UML, donde los diagramas se elaboran al inicio y se abandonan cuando comienza la programación \cite{Schmidt2006,Selic2003}.
+
+El PFC del Equipo A aborda el seguimiento de terapias físicas. El subsistema estudiado representa usuarios, pacientes, fisioterapeutas, planes, ejercicios, sesiones y evaluaciones. A través de Umbrello UML Modeller se pretende demostrar que la estructura definida en UML puede producir código fuente C\#. Para interpretar correctamente esta demostración es necesario comprender qué automatiza MDD, qué información permanece fuera del generador y cómo se conserva la trazabilidad desde los requisitos.
+
+La contribución de Esther se centra en la investigación conceptual, la identificación de requisitos, la justificación de la herramienta y la reflexión ética. Este trabajo da sustento a las decisiones técnicas tomadas por Frixon en el modelo y por Angelo en la generación.
+
+\section{Model-Driven Engineering}
+\subsection{Modelos como artefactos de primera clase}
+Model-Driven Engineering (MDE) es un paradigma en el que los modelos son productos activos y procesables. No son únicamente imágenes; deben ajustarse a lenguajes y metamodelos que permitan analizarlos y transformarlos. Schmidt explica que MDE busca reducir la complejidad accidental mediante lenguajes de modelado y generadores adecuados al dominio \cite{Schmidt2006}.
+
+Brambilla, Cabot y Wimmer destacan que el valor de MDE depende de la automatización y del papel de los modelos durante el ciclo de vida \cite{Brambilla2017}. Un diagrama sin semántica procesable no basta. Por ello, la actividad exige un archivo nativo de Umbrello y no acepta herramientas de dibujo genérico. El modelo debe contener clases, tipos, visibilidad, operaciones y relaciones que el generador pueda interpretar.
+
+\subsection{MDE, MDA y MDD}
+Aunque los términos están relacionados, no son equivalentes:
+\begin{itemize}
+  \item \textbf{MDE} es el paradigma amplio que coloca los modelos en el centro de la ingeniería.
+  \item \textbf{MDA} es la arquitectura promovida por OMG para organizar modelos por niveles de independencia respecto de la plataforma.
+  \item \textbf{MDD} es la aplicación práctica del paradigma al desarrollo, donde el modelo guía o produce parte de la implementación.
+\end{itemize}
+
+MDD no significa que todo el sistema se genere sin intervención. Selic advierte que su uso pragmático requiere seleccionar adecuadamente qué aspectos se modelan y qué decisiones permanecen en la programación \cite{Selic2003}. En el proyecto de terapias físicas, MDD se aplica a la estructura orientada a objetos, pero no a la interfaz, la base de datos, la autenticación real ni las reglas clínicas completas.
+
+\section{Niveles CIM, PIM y PSM}
+La guía MDA organiza el desarrollo en niveles de abstracción \cite{OMG2014MDA}.
+
+\subsection{CIM: modelo independiente de la computación}
+El CIM representa el problema, los actores y los objetivos sin detallar la solución tecnológica. Para el sistema de terapias físicas, el CIM incluye afirmaciones como:
+\begin{itemize}
+  \item el fisioterapeuta diseña un plan para el paciente;
+  \item el plan contiene ejercicios y sesiones;
+  \item las sesiones generan información de progreso;
+  \item el paciente debe poder consultar su evolución.
+\end{itemize}
+
+Estos enunciados expresan necesidades del dominio y pueden transformarse en requisitos funcionales.
+
+\subsection{PIM: modelo independiente de plataforma}
+El PIM representa la lógica y estructura del sistema sin ligarla completamente a C\#, Java o una base de datos específica. El diagrama UML con las clases \texttt{Paciente}, \texttt{PlanTerapia} y \texttt{SesionTerapia} se aproxima a este nivel porque describe conceptos del dominio, atributos, operaciones y cardinalidades.
+
+\subsection{PSM: modelo específico de plataforma}
+El PSM incorpora decisiones de tecnología. Al seleccionar C\# como lenguaje objetivo, los tipos y relaciones deben expresarse en construcciones compatibles con .NET. \texttt{DateTime}, \texttt{bool}, herencia mediante dos puntos y colecciones tipadas son decisiones asociadas al PSM. Umbrello produce código que acerca el PIM al PSM, aunque la transformación no cubre el proyecto completo.
+
+\begin{table}[H]
+\centering
+\caption{Aplicación de los niveles MDA al PFC}
+\begin{tabularx}{\textwidth}{C{2.2cm}L{5cm}X}
+\toprule
+\textbf{Nivel} & \textbf{Ejemplo en el proyecto} & \textbf{Evidencia} \\
+\midrule
+CIM & Necesidad de controlar tratamientos y progreso. & Actores y requisitos funcionales. \\
+PIM & Clases, atributos, operaciones y relaciones UML. & Diagrama de clases de Umbrello. \\
+PSM & Estructuras C\# y tipos .NET. & Archivos \texttt{.cs} generados. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Transformaciones M2M y M2T}
+\subsection{Transformaciones modelo-a-modelo}
+Una transformación M2M genera un modelo a partir de otro. QVT es el estándar de OMG asociado a este tipo de transformación \cite{OMG2016QVT}. Un ejemplo sería transformar un modelo conceptual independiente de plataforma en un modelo orientado a clases C\# con estereotipos tecnológicos. El trabajo del Equipo A no implementa una transformación QVT explícita, pero utiliza su lógica conceptual al adaptar el modelo para un lenguaje objetivo.
+
+\subsection{Transformaciones modelo-a-texto}
+M2T genera texto a partir de un modelo. El código C\# producido por Umbrello es un caso directo: una clase UML produce un archivo, un atributo produce un campo y una operación produce una firma. MOFM2T define principios para lenguajes de transformación de modelo a texto \cite{OMG2008MOFM2T}.
+
+\begin{table}[H]
+\centering
+\caption{Diferencia entre M2M y M2T}
+\begin{tabularx}{\textwidth}{L{3cm}L{5.2cm}X}
+\toprule
+\textbf{Tipo} & \textbf{Resultado} & \textbf{Ejemplo} \\
+\midrule
+M2M & Otro modelo conforme a un metamodelo. & PIM genérico transformado en PSM para .NET. \\
+M2T & Texto ejecutable o documental. & Clases UML convertidas en archivos C\#. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La distinción es importante porque evita llamar ``MDD'' a cualquier plantilla. La generación debe depender del contenido formal del modelo y producir una salida que conserve su semántica estructural.
+
+\section{Metamodelado, UML y perfiles}
+UML es un lenguaje estandarizado por OMG. Su especificación define elementos como clases, atributos, operaciones, asociaciones, generalización, agregación, composición y multiplicidad \cite{OMG2017UML}. El metamodelo establece qué elementos existen y cómo pueden relacionarse. Umbrello no interpreta una caja dibujada como clase por apariencia; procesa un elemento de modelo creado como \textit{Class}.
+
+Los perfiles UML permiten extender el lenguaje con estereotipos y valores etiquetados. En plataformas empresariales pueden utilizarse estereotipos como \texttt{Entity}, \texttt{Service} o \texttt{Controller}. El subsistema del Equipo A no requirió perfiles especializados porque el objetivo era generar estructura de dominio. Esta decisión reduce la complejidad, pero limita el resultado: no se generan capas de persistencia, controladores web ni interfaz.
+
+\section{Trazabilidad desde requisitos}
+La trazabilidad permite identificar el origen y el impacto de los elementos del sistema. Gotel y Finkelstein describen la dificultad de mantener vínculos entre requisitos y artefactos posteriores cuando los procesos no registran relaciones explícitas \cite{Gotel1994}. En esta actividad, la cadena de trazabilidad se define como:
+\[
+\text{requisito} \rightarrow \text{clase UML} \rightarrow \text{archivo C\#} \rightarrow \text{miembro de código}
+\]
+
+\subsection{Requisitos funcionales relevantes}
+\begin{table}[H]
+\centering
+\caption{Requisitos del subsistema y su representación}
+\begin{tabularx}{\textwidth}{L{2cm}X L{4.2cm}}
+\toprule
+\textbf{ID} & \textbf{Requisito funcional} & \textbf{Clases relacionadas} \\
+\midrule
+RF-01 & El sistema permitirá registrar y administrar pacientes. & Usuario, Paciente. \\
+RF-02 & El fisioterapeuta podrá evaluar a un paciente. & Fisioterapeuta, Paciente. \\
+RF-03 & El fisioterapeuta podrá crear un plan de terapia. & Fisioterapeuta, PlanTerapia. \\
+RF-04 & El plan incluirá uno o más ejercicios. & PlanTerapia, Ejercicio. \\
+RF-05 & El plan programará sesiones de terapia. & PlanTerapia, SesionTerapia. \\
+RF-06 & El sistema calculará el progreso de las sesiones. & SesionTerapia, Paciente. \\
+RF-07 & Se registrarán indicadores de progreso clínico. & EvaluacionProgreso. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+ISO/IEC/IEEE 29148 establece que los requisitos deben ser claros, verificables y trazables \cite{ISO29148}. La tabla anterior no sustituye una especificación completa, pero conecta el modelo con necesidades reconocibles del PFC.
+
+\section{Descripción del subsistema}
+El subsistema organiza el seguimiento básico de una terapia física. \texttt{Usuario} concentra información común de acceso; \texttt{Paciente} representa a la persona que recibe la intervención; \texttt{Fisioterapeuta} planifica y evalúa; \texttt{PlanTerapia} establece objetivos, fechas y estado; \texttt{Ejercicio} describe las actividades; \texttt{SesionTerapia} registra el desarrollo temporal; y \texttt{EvaluacionProgreso} almacena indicadores clínicos.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.93\textwidth]{figuras/diagrama_normalizado.png}
+\caption{Modelo normalizado utilizado como base conceptual del subsistema.}
+\label{fig:modelo-esther}
+\end{figure}
+
+El modelo supera el mínimo de seis clases establecido por la rúbrica y contiene varios tipos de relación. Su alcance se mantiene deliberadamente limitado: no intenta representar citas, facturación, inventario, notificaciones o expedientes completos. Esta delimitación permite que el equipo demuestre el ciclo MDD con un módulo comprensible.
+
+\section{Estado del arte y desafíos de MDE}
+Kahani et al. identifican una amplia diversidad de herramientas de transformación, con diferencias en lenguajes, metamodelos, automatización y extensibilidad \cite{Kahani2019}. Esta diversidad ofrece opciones, pero dificulta la interoperabilidad. Un modelo elaborado en una herramienta puede requerir ajustes para ser procesado por otra.
+
+Bucchiarone et al. señalan desafíos como escalabilidad, evolución, experiencia de usuario, integración y adopción industrial \cite{Bucchiarone2020}. Whittle et al. muestran que la práctica de MDE depende de factores organizacionales y de la capacidad de adaptar las técnicas a problemas concretos \cite{Whittle2014}. Estos resultados respaldan una conclusión importante: MDD aporta valor cuando el alcance de automatización es explícito y el equipo no espera una generación total del sistema.
+
+Para el PFC, Umbrello se emplea en un escenario adecuado a sus capacidades: generar una estructura de clases pequeña y trazable. No se utiliza para producir una arquitectura empresarial completa ni para resolver automáticamente las reglas clínicas.
+
+\section{Justificación de Umbrello}
+\subsection{Criterios de selección}
+La herramienta se evaluó según:
+\begin{itemize}
+  \item capacidad de modelar clases y relaciones UML;
+  \item generación real de C\#;
+  \item disponibilidad en Windows;
+  \item licencia libre;
+  \item archivo nativo conservable en GitHub;
+  \item curva de aprendizaje compatible con el tiempo académico;
+  \item posibilidad de demostrar el proceso en vivo.
+\end{itemize}
+
+KDE describe Umbrello como herramienta UML y generador de código, con soporte para varios lenguajes \cite{KDEUmbrelloApp,KDEUmbrelloCodegen}. Su licencia facilita el uso académico sin adquirir una suscripción. Además, el \textit{Code Generation Wizard} hace visible la selección de clases y opciones, lo que fortalece la demostración.
+
+\subsection{Comparación con alternativas}
+\begin{table}[H]
+\centering
+\caption{Comparación cualitativa de herramientas}
+\begin{tabularx}{\textwidth}{L{3cm}C{2.2cm}C{2.5cm}X}
+\toprule
+\textbf{Herramienta} & \textbf{Licencia} & \textbf{Generación} & \textbf{Observación} \\
+\midrule
+Umbrello & Libre & Estructural & Adecuada para aprendizaje y demostración reproducible. \\
+Enterprise Architect & Comercial & Avanzada & Mayor personalización y roundtrip, pero más compleja y de pago \cite{SparxCodeEngineering}. \\
+Visual Paradigm & Comercial/freemium & Avanzada & Integración amplia; varias funciones dependen de la edición. \\
+BOUML & Mixta según versión & Estructural & Ligera y rápida, con una interfaz menos familiar para principiantes. \\
+Modelio & Libre/comercial & Modular & Amplía funciones mediante módulos y requiere configuración adicional. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Umbrello no fue seleccionada por ser la herramienta más potente, sino por el ajuste entre sus capacidades y los objetivos de la actividad. Esta justificación es más sólida que afirmar simplemente que ``es gratis''.
+
+\section{Criterios éticos y de uso responsable}
+Aunque la herramienta no es un asistente de IA generativa, la actividad exige criterios éticos porque existe riesgo de confundir la autoría y el alcance del código. Los principios aplicados son:
+\begin{enumerate}
+  \item \textbf{Transparencia:} indicar qué archivos y miembros provienen de Umbrello.
+  \item \textbf{No suplantación:} no presentar \texttt{Program.cs} ni lógica manual como salida automática.
+  \item \textbf{Revisión humana:} compilar, inspeccionar y probar antes de integrar el código.
+  \item \textbf{Responsabilidad:} los errores del generador o del modelo no se transfieren a la herramienta; el equipo debe corregirlos.
+  \item \textbf{Privacidad:} no utilizar datos clínicos reales en una demostración académica sin autorización.
+  \item \textbf{Trazabilidad:} conservar modelo, capturas, código e historial de commits.
+\end{enumerate}
+
+En un sistema de salud, estas precauciones son especialmente relevantes. La estructura generada no debe interpretarse como validación clínica ni como garantía de seguridad.
+
+\section{Relación entre la teoría y la demostración}
+\begin{table}[H]
+\centering
+\caption{Conceptos investigados y evidencia práctica}
+\begin{tabularx}{\textwidth}{L{4cm}X}
+\toprule
+\textbf{Concepto} & \textbf{Aplicación en el trabajo} \\
+\midrule
+MDE & El modelo se conserva como artefacto central del repositorio. \\
+MDA & El UML representa un PIM y C\# introduce decisiones de PSM. \\
+MDD & Parte de la implementación se obtiene desde el modelo. \\
+M2T & Las clases se convierten en archivos \texttt{.cs}. \\
+Metamodelo UML & Las relaciones y elementos son objetos de modelo, no dibujos. \\
+Trazabilidad & Requisitos, clases y archivos se relacionan mediante tablas. \\
+Roundtrip controlado & Un cambio UML se comprueba después de regenerar. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La tabla muestra por qué la exposición no debe reducirse a los pasos del asistente. La práctica es la evidencia de conceptos previamente investigados.
+
+\section{Aporte personal de Esther}
+El aporte individual comprende:
+\begin{enumerate}
+  \item investigación de MDE, MDA y MDD;
+  \item explicación de CIM, PIM y PSM;
+  \item diferenciación entre M2M y M2T;
+  \item revisión de UML, metamodelos y perfiles;
+  \item investigación del estado del arte y desafíos de adopción;
+  \item identificación de actores y requisitos funcionales;
+  \item justificación de Umbrello frente a alternativas;
+  \item formulación de criterios éticos y de transparencia;
+  \item apoyo a las referencias científicas en formato IEEE;
+  \item preparación del segmento teórico de la exposición.
+\end{enumerate}
+
+Esta contribución proporciona la base académica que conecta la demostración técnica con la Ingeniería de Requisitos y los criterios de evaluación.
+
+\section{Conclusiones}
+MDD ofrece un mecanismo para mantener una relación más directa entre los requisitos, el modelo y la implementación, pero su éxito depende del alcance y la calidad de los artefactos. El proyecto de terapias físicas utiliza un modelo de dominio suficientemente representativo para generar una línea base en C\#, sin afirmar que toda la aplicación fue automatizada.
+
+La investigación confirma que Umbrello es una elección apropiada para una práctica académica por su licencia, accesibilidad, modelado UML y generación estructural. Su principal limitación es la falta de una sincronización avanzada y de lógica de negocio automática. Por ello, el equipo debe mantener control de versiones, separar el código manual y verificar cada salida.
+
+El aporte teórico permite interpretar la práctica como una transformación M2T vinculada a un PIM y un PSM, con trazabilidad hacia requisitos funcionales. Esta comprensión es necesaria para responder preguntas del docente y demostrar que el equipo no se limitó a seguir un tutorial.
+
+
+\appendices
+\section{Matriz de fuentes científicas y normativas}
+La siguiente matriz resume cómo se utilizó cada fuente. Esta evidencia facilita demostrar que la fundamentación no procede de blogs ni de definiciones aisladas.
+
+\begin{longtable}{L{3.8cm}L{4.2cm}L{6.1cm}}
+\caption{Fuentes utilizadas en la investigación de Esther}\\
+\toprule
+\textbf{Fuente} & \textbf{Aporte conceptual} & \textbf{Aplicación en el documento} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Fuente} & \textbf{Aporte conceptual} & \textbf{Aplicación en el documento} \\
+\midrule
+\endhead
+Schmidt (2006) & Definición de MDE y abstracción. & Explicación del papel activo de los modelos. \\
+Selic (2003) & Aplicación pragmática de MDD. & Delimitación de lo que se genera y lo que permanece manual. \\
+Brambilla et al. (2017) & Proceso práctico de ingeniería dirigida por modelos. & Relación entre modelos, transformaciones y código. \\
+Whittle et al. (2014) & Estado de la práctica. & Análisis de factores organizacionales y adopción. \\
+Bucchiarone et al. (2020) & Desafíos de investigación. & Limitaciones de interoperabilidad, evolución y escalabilidad. \\
+Kahani et al. (2019) & Clasificación de herramientas. & Contexto del ecosistema de transformación. \\
+Gotel y Finkelstein (1994) & Problema de trazabilidad. & Cadena requisito--modelo--código. \\
+OMG MDA Guide & CIM, PIM y PSM. & Organización de niveles de abstracción. \\
+OMG UML 2.5.1 & Semántica de elementos UML. & Interpretación formal del diagrama de clases. \\
+OMG MOFM2T & Transformaciones modelo-a-texto. & Clasificación de la generación C\# de Umbrello. \\
+OMG QVT & Transformaciones modelo-a-modelo. & Diferenciación frente a M2T. \\
+ISO/IEC/IEEE 29148 & Calidad y trazabilidad de requisitos. & Formulación de requisitos funcionales. \\
+\bottomrule
+\end{longtable}
+
+\section{Glosario para la exposición}
+\begin{description}
+  \item[MDE:] paradigma general en el que los modelos son artefactos de primera clase.
+  \item[MDA:] propuesta de OMG que separa CIM, PIM y PSM.
+  \item[MDD:] aplicación de MDE para conducir el desarrollo y obtener implementaciones.
+  \item[CIM:] visión del dominio independiente de decisiones computacionales.
+  \item[PIM:] modelo de la lógica independiente de una plataforma concreta.
+  \item[PSM:] modelo adaptado a una plataforma, en este caso C\#/.NET.
+  \item[M2M:] transformación cuyo resultado es otro modelo.
+  \item[M2T:] transformación cuyo resultado es texto, como código fuente.
+  \item[Metamodelo:] modelo que define la estructura válida de un lenguaje de modelado.
+  \item[Trazabilidad:] capacidad de seguir un requisito hasta diseño, código y pruebas.
+  \item[Forward engineering:] producción de código a partir del modelo.
+  \item[Roundtrip controlado:] cambio del modelo, regeneración y comprobación del cambio.
+\end{description}
+
+\section{Guion personal para Esther}
+La intervención puede durar entre tres y cuatro minutos y debe enlazar la teoría con el caso práctico:
+\begin{enumerate}
+  \item explicar que MDE convierte al modelo en un artefacto procesable;
+  \item distinguir MDA y MDD sin presentarlos como sinónimos;
+  \item relacionar el diagrama con un PIM y el código C\# con un PSM;
+  \item identificar la generación como transformación M2T;
+  \item justificar Umbrello por ajuste al PFC, licencia, Windows y C\#;
+  \item mencionar una alternativa y explicar por qué no fue priorizada;
+  \item cerrar con criterios éticos: transparencia, revisión y separación del código manual.
+\end{enumerate}
+
+\section{Preguntas que Esther debe poder responder}
+\begin{enumerate}
+  \item \textbf{¿MDE, MDA y MDD son iguales?} No. MDE es el paradigma, MDA es la arquitectura de OMG y MDD es la aplicación al desarrollo.
+  \item \textbf{¿La práctica contiene una transformación M2M?} No de forma explícita; la evidencia principal es M2T, aunque el paso PIM--PSM sirve como interpretación conceptual.
+  \item \textbf{¿Por qué Umbrello es admisible?} Porque genera código verificable desde elementos UML y conserva un modelo nativo.
+  \item \textbf{¿Por qué no basta con ser gratuito?} La selección debe responder al lenguaje, plataforma, licencia, curva de aprendizaje y necesidades del PFC.
+  \item \textbf{¿Qué riesgo ético existe?} Presentar código manual o incompleto como si fuera una aplicación generada y validada automáticamente.
+\end{enumerate}
+
+\printbibliography[title={Referencias}]
+\end{document}
