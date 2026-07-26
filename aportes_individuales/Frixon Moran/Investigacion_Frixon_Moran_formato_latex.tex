@@ -1,0 +1,387 @@
+\input{preambulo_formato_final}
+\begin{document}
+\CaratulaIndividual{INVESTIGACIÓN INDIVIDUAL - FRIXON MORÁN}{MORÁN PILAGUANO FRIXON FERNANDO}{Modelado UML, normalización del subsistema, atributos, operaciones, relaciones, cardinalidades y trazabilidad.}
+
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Resumen}
+Esta investigación documenta el aporte de Frixon Morán en la construcción y revisión del modelo UML de origen utilizado para generar código C\# con Umbrello UML Modeller. El trabajo se aplica al Sistema Inteligente de Control y Seguimiento de Terapia Física y comprende la delimitación del subsistema, la identificación de clases del dominio, la definición de atributos tipados, operaciones con firmas completas, visibilidad, relaciones y cardinalidades. Se analizan las siete clases del modelo: \texttt{Usuario}, \texttt{Paciente}, \texttt{Fisioterapeuta}, \texttt{PlanTerapia}, \texttt{Ejercicio}, \texttt{SesionTerapia} y \texttt{EvaluacionProgreso}. También se estudian los criterios para utilizar generalización, asociación, agregación y composición, así como el mapeo esperado hacia C\#. La investigación compara la captura real de Umbrello con una versión normalizada y explica las correcciones necesarias, entre ellas la eliminación de nombres temporales como \texttt{new\_attribute}, la unificación de tipos y la revisión de multiplicidades. El aporte de Frixon constituye la base técnica del ciclo MDD, porque la calidad del código generado depende directamente de la calidad sintáctica y semántica del modelo.
+
+\section{Introducción}
+El diagrama de clases es el artefacto obligatorio para la generación estructural de código. Su propósito no es solo mostrar cajas conectadas, sino representar conceptos del dominio mediante elementos UML con semántica definida. Una clase debe contener responsabilidades, atributos, operaciones y relaciones coherentes; de lo contrario, el generador trasladará al código los errores o ambigüedades existentes en el modelo \cite{OMG2017UML,Brambilla2017}.
+
+El subsistema modelado pertenece al PFC de terapias físicas. El objetivo es representar el flujo básico desde la identificación de usuarios hasta la planificación, ejecución y evaluación de una terapia. La selección de siete clases supera el mínimo exigido por la rúbrica y permite mostrar varios mecanismos de UML: herencia, asociaciones, agregación, composición y multiplicidades \cite{GuiaMDD2026}.
+
+La responsabilidad de Frixon se concentra en organizar el dominio, construir las clases, revisar la notación y preparar un modelo procesable por Umbrello. Este aporte es determinante: la generación de Angelo y la fundamentación de Esther dependen de que el modelo de origen sea consistente.
+
+\section{Delimitación del subsistema}
+El sistema completo de terapias físicas podría incluir citas, expedientes, autenticación, notificaciones, pagos, reportes, almacenamiento multimedia y análisis de movimiento. Sin embargo, un modelo para una demostración MDD debe ser representativo y controlable. El alcance seleccionado cubre:
+\begin{itemize}
+  \item identificación de usuarios del sistema;
+  \item especialización de pacientes y fisioterapeutas;
+  \item creación de planes de terapia;
+  \item inclusión de ejercicios;
+  \item programación y registro de sesiones;
+  \item evaluación del progreso del paciente.
+\end{itemize}
+
+Esta delimitación evita un modelo trivial, pero también impide que la exposición se vuelva inmanejable. El subsistema contiene suficiente información para evidenciar correspondencia con requisitos y generar siete archivos C\#.
+
+\section{Requisitos funcionales que originan el modelo}
+\begin{table}[H]
+\centering
+\caption{Requisitos funcionales considerados durante el modelado}
+\begin{tabularx}{\textwidth}{L{2cm}X L{4.5cm}}
+\toprule
+\textbf{ID} & \textbf{Descripción} & \textbf{Elemento principal} \\
+\midrule
+RF-01 & Registrar información general de los usuarios. & Usuario. \\
+RF-02 & Mantener información clínica básica del paciente. & Paciente. \\
+RF-03 & Registrar especialidad y licencia del fisioterapeuta. & Fisioterapeuta. \\
+RF-04 & Crear planes con fechas, objetivo y estado. & PlanTerapia. \\
+RF-05 & Asociar ejercicios con repeticiones y duración. & Ejercicio. \\
+RF-06 & Registrar sesiones con fecha, duración y observaciones. & SesionTerapia. \\
+RF-07 & Evaluar dolor, movilidad, fatiga y progreso. & EvaluacionProgreso. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La identificación de requisitos antes de crear las clases evita introducir elementos por relleno. La trazabilidad exige que cada clase tenga una razón de existir y que sus miembros aporten a una necesidad del PFC \cite{ISO29148,Gotel1994}.
+
+\section{Modelo construido en Umbrello}
+La Figura~\ref{fig:original} muestra la captura real del modelo desarrollado. Esta evidencia es importante porque demuestra que las clases y relaciones se encuentran dentro de Umbrello y no fueron dibujadas en una herramienta externa.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.96\textwidth]{figuras/modelo_umbrello_original.png}
+\caption{Modelo original construido en Umbrello UML Modeller.}
+\label{fig:original}
+\end{figure}
+
+La captura registra siete clases, herencia, asociaciones, agregación y composición. Durante la revisión se identificaron elementos temporales \texttt{new\_attribute} asociados a algunas relaciones. Estos nombres no representan requisitos del sistema y deben eliminarse o sustituirse por nombres semánticos antes de considerar el modelo final.
+
+La Figura~\ref{fig:normalizado} muestra una representación normalizada utilizada para revisar la estructura sin textos temporales ni cruces innecesarios.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figuras/diagrama_normalizado.png}
+\caption{Representación normalizada del modelo de terapia física.}
+\label{fig:normalizado}
+\end{figure}
+
+\section{Diseño de las clases}
+\subsection{Usuario}
+\texttt{Usuario} contiene datos compartidos por los actores que acceden al sistema. Centralizar nombres, apellidos y correo evita duplicación en las clases especializadas.
+
+\begin{table}[H]
+\centering
+\caption{Especificación de la clase Usuario}
+\begin{tabularx}{\textwidth}{L{4cm}L{3cm}X}
+\toprule
+\textbf{Miembro} & \textbf{Tipo/retorno} & \textbf{Justificación} \\
+\midrule
+idUsuario & int & Identificador interno. \\
+nombres, apellidos & string & Datos de identificación. \\
+correo & string & Medio de acceso o contacto. \\
+iniciarSesion & bool & Indica si las credenciales son válidas. \\
+cerrarSesion & void & Finaliza la interacción autenticada. \\
+obtenerNombreCompleto & string & Devuelve una representación legible. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La clase funciona como generalización de \texttt{Paciente} y \texttt{Fisioterapeuta}. En UML, el triángulo vacío apunta hacia la clase más general \cite{OMG2017UML}.
+
+\subsection{Paciente}
+\texttt{Paciente} representa a la persona que recibe tratamiento. Los datos heredados no deben repetirse. Sus atributos propios son edad, diagnóstico y teléfono. La operación \texttt{actualizarDiagnostico(nuevoDiagnostico:string):void} modifica información clínica, mientras que \texttt{consultarProgreso():double} representa una consulta cuantitativa.
+
+\subsection{Fisioterapeuta}
+La clase almacena especialidad y número de licencia. Sus operaciones reciben objetos del dominio:
+\begin{itemize}
+  \item \texttt{evaluarPaciente(paciente:Paciente):void};
+  \item \texttt{crearPlanTerapia(paciente:Paciente):PlanTerapia}.
+\end{itemize}
+
+La expresión \texttt{paciente:Paciente} no es un error. El término en minúscula es el nombre del parámetro y el término con mayúscula es su tipo. Recibir un objeto completo permite utilizar los datos y comportamiento de la clase.
+
+\subsection{PlanTerapia}
+\texttt{PlanTerapia} organiza el tratamiento. Contiene identificador, fechas, objetivo y estado. Las fechas utilizan \texttt{DateTime}, creado como datatype en Umbrello cuando no aparece entre los tipos predeterminados. Entre sus operaciones se encuentran agregar ejercicios, cambiar estado y calcular duración.
+
+\subsection{Ejercicio}
+La clase describe una actividad terapéutica mediante nombre, descripción, repeticiones y duración en minutos. La presencia de \texttt{duracionMinutos} también en \texttt{SesionTerapia} es válida porque los atributos pertenecen a clases diferentes. En \texttt{Ejercicio} representa la duración de una actividad; en \texttt{SesionTerapia}, la duración total de la sesión.
+
+\subsection{SesionTerapia}
+La clase registra fecha, duración, observaciones y estado de finalización. La operación \texttt{calcularProgreso(sesionesRealizadas:int, sesionesPlanificadas:int):double} modela una firma que después requiere implementación en C\#.
+
+\subsection{EvaluacionProgreso}
+Esta clase registra indicadores como nivel de dolor, movilidad, fatiga y comentario. Se separa de la sesión para representar una entidad con información clínica propia. La multiplicidad \texttt{0..1} indica que una sesión puede no haber sido evaluada todavía o puede producir una evaluación.
+
+\section{Catálogo consolidado de atributos}
+Todos los atributos fueron definidos con visibilidad privada. Esta decisión protege el estado interno y permite que las modificaciones se realicen mediante operaciones controladas.
+
+\begin{longtable}{L{3.4cm}L{4.2cm}L{3cm}L{3.4cm}}
+\caption{Atributos del modelo de origen}\\
+\toprule
+\textbf{Clase} & \textbf{Atributo} & \textbf{Tipo} & \textbf{Visibilidad} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Clase} & \textbf{Atributo} & \textbf{Tipo} & \textbf{Visibilidad} \\
+\midrule
+\endhead
+Usuario & idUsuario & int & Private \\
+Usuario & nombres & string & Private \\
+Usuario & apellidos & string & Private \\
+Usuario & correo & string & Private \\
+Paciente & edad & int & Private \\
+Paciente & diagnostico & string & Private \\
+Paciente & telefono & string & Private \\
+Fisioterapeuta & especialidad & string & Private \\
+Fisioterapeuta & numeroLicencia & string & Private \\
+PlanTerapia & idPlan & int & Private \\
+PlanTerapia & fechaInicio & DateTime & Private \\
+PlanTerapia & fechaFin & DateTime & Private \\
+PlanTerapia & objetivo & string & Private \\
+PlanTerapia & estado & string & Private \\
+Ejercicio & idEjercicio & int & Private \\
+Ejercicio & nombre & string & Private \\
+Ejercicio & descripcion & string & Private \\
+Ejercicio & repeticiones & int & Private \\
+Ejercicio & duracionMinutos & int & Private \\
+SesionTerapia & idSesion & int & Private \\
+SesionTerapia & fecha & DateTime & Private \\
+SesionTerapia & duracionMinutos & int & Private \\
+SesionTerapia & observaciones & string & Private \\
+SesionTerapia & completada & bool & Private \\
+EvaluacionProgreso & idEvaluacion & int & Private \\
+EvaluacionProgreso & fechaEvaluacion & DateTime & Private \\
+EvaluacionProgreso & nivelDolor & int & Private \\
+EvaluacionProgreso & fatiga & int & Private \\
+EvaluacionProgreso & movilidad & double & Private \\
+EvaluacionProgreso & comentario & string & Private \\
+\bottomrule
+\end{longtable}
+
+\section{Catálogo consolidado de operaciones}
+Las operaciones se definieron con visibilidad pública para representar servicios accesibles desde otros objetos. Los parámetros se agregaron mediante la sección de parámetros de Umbrello y no como parte del nombre del método.
+
+\begin{longtable}{L{3.4cm}L{5.4cm}L{3cm}L{2.8cm}}
+\caption{Operaciones principales del modelo}\\
+\toprule
+\textbf{Clase} & \textbf{Operación} & \textbf{Retorno} & \textbf{Visibilidad} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Clase} & \textbf{Operación} & \textbf{Retorno} & \textbf{Visibilidad} \\
+\midrule
+\endhead
+Usuario & iniciarSesion(correo:string) & bool & Public \\
+Usuario & cerrarSesion() & void & Public \\
+Usuario & obtenerNombre() & string & Public \\
+Paciente & actualizarDiagnostico(nuevoDiagnostico:string) & void & Public \\
+Paciente & consultarProgreso() & double & Public \\
+Fisioterapeuta & evaluarPaciente(paciente:Paciente) & void & Public \\
+Fisioterapeuta & crearPlanTerapia(paciente:Paciente) & PlanTerapia & Public \\
+PlanTerapia & agregarEjercicio(ejercicio:Ejercicio) & void & Public \\
+PlanTerapia & cambiarEstado(nuevoEstado:string) & void & Public \\
+PlanTerapia & calcularDuracionDias() & int & Public \\
+Ejercicio & actualizarRepeticiones(cantidad:int) & void & Public \\
+Ejercicio & actualizarDuracion(minutos:int) & void & Public \\
+SesionTerapia & finalizarSesion() & void & Public \\
+SesionTerapia & calcularProgreso(realizadas:int, planificadas:int) & double & Public \\
+EvaluacionProgreso & registrarResultado() & void & Public \\
+EvaluacionProgreso & calcularPromedio() & double & Public \\
+\bottomrule
+\end{longtable}
+
+\section{Relaciones UML y cardinalidades}
+\subsection{Generalización}
+\texttt{Paciente} y \texttt{Fisioterapeuta} heredan de \texttt{Usuario}. Esta relación evita duplicar atributos comunes. Para crearla en Umbrello se selecciona \textit{Generalization}, se hace clic primero en la clase hija y luego en la clase padre.
+
+\subsection{Asociaciones}
+Las asociaciones representan vínculos sin dependencia fuerte de ciclo de vida:
+\begin{itemize}
+  \item un paciente posee cero o varios planes;
+  \item un fisioterapeuta diseña cero o varios planes.
+\end{itemize}
+
+En ambos casos, cada plan se vincula con un paciente y un fisioterapeuta. La multiplicidad \texttt{0..*} permite que un actor exista antes de tener planes asociados.
+
+\subsection{Agregación}
+La relación entre \texttt{PlanTerapia} y \texttt{Ejercicio} se modela con rombo blanco en el lado del plan. El ejercicio puede existir como elemento de catálogo y reutilizarse. La multiplicidad \texttt{1..*} expresa que un plan debe incluir al menos un ejercicio.
+
+\subsection{Composición}
+El plan compone sesiones y la sesión compone una evaluación. El rombo negro se coloca junto al todo. La composición indica una relación más fuerte: la sesión se gestiona dentro del plan, y la evaluación pertenece al contexto de la sesión.
+
+\begin{table}[H]
+\centering
+\caption{Relaciones y multiplicidades definitivas}
+\begin{tabularx}{\textwidth}{L{3.7cm}L{3.7cm}L{3.1cm}X}
+\toprule
+\textbf{Origen} & \textbf{Destino} & \textbf{Tipo} & \textbf{Multiplicidades} \\
+\midrule
+Paciente & Usuario & Generalización & No aplica. \\
+Fisioterapeuta & Usuario & Generalización & No aplica. \\
+Paciente & PlanTerapia & Asociación & Paciente 1; Plan 0..*. \\
+Fisioterapeuta & PlanTerapia & Asociación & Fisio 1; Plan 0..*. \\
+PlanTerapia & Ejercicio & Agregación & Plan 1; Ejercicio 1..*. \\
+PlanTerapia & SesionTerapia & Composición & Plan 1; Sesión 0..*. \\
+SesionTerapia & EvaluacionProgreso & Composición & Sesión 1; Evaluación 0..1. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Revisión de consistencia}
+La validación del modelo incluyó una revisión manual porque algunas versiones de Umbrello no muestran un único comando de validación semántica para todos los elementos. Se aplicó la siguiente lista:
+\begin{itemize}
+  \item las siete entidades fueron creadas como clases reales;
+  \item los tipos auxiliares se registraron como datatypes;
+  \item cada operación tiene retorno explícito;
+  \item los atributos no se repiten dentro de una misma clase;
+  \item las generalizaciones apuntan a \texttt{Usuario};
+  \item los rombos se encuentran en el lado del todo;
+  \item las asociaciones incluyen multiplicidades;
+  \item los roles temporales se eliminaron;
+  \item se evitaron nombres con espacios o tildes en elementos destinados al código.
+\end{itemize}
+
+\subsection{Correcciones detectadas}
+La captura original presenta elementos \texttt{new\_attribute} vinculados a \texttt{PlanTerapia} y \texttt{SesionTerapia}. Estos campos pueden surgir cuando una asociación genera atributos automáticos o cuando se confirma una creación sin renombrar. Deben corregirse porque reducen la legibilidad y pueden producir campos genéricos en C\#.
+
+También se revisaron nombres como \texttt{Estado\_completo} y \texttt{duracion\_Minutos}. Para mantener una convención uniforme se recomienda \texttt{completada} y \texttt{duracionMinutos}. La normalización de nombres es parte de la calidad del modelo, no un detalle estético.
+
+\section{Mapeo esperado hacia C\#}
+\begin{table}[H]
+\centering
+\caption{Decisiones de mapeo UML--C\#}
+\begin{tabularx}{\textwidth}{L{4.3cm}X}
+\toprule
+\textbf{Elemento UML} & \textbf{Construcción C\# esperada} \\
+\midrule
+Clase & Archivo y declaración \texttt{public class}. \\
+Atributo privado & Campo \texttt{private}. \\
+Operación pública & Método \texttt{public}. \\
+Generalización & \texttt{class Paciente : Usuario}. \\
+Parámetro de clase & \texttt{Ejercicio ejercicio} o \texttt{Paciente paciente}. \\
+Multiplicidad múltiple & Colección tipada, si el generador la materializa. \\
+Composición/agregación & Referencia o colección con semántica documentada. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+El mapeo de relaciones puede variar según la configuración y versión de Umbrello. Por ello, la tabla distingue el resultado esperado de la comprobación real. La trazabilidad debe documentar lo que efectivamente aparece en los archivos, no solo lo que se esperaba.
+
+\section{Aporte personal de Frixon}
+El aporte individual comprende:
+\begin{enumerate}
+  \item delimitación del subsistema representativo;
+  \item identificación de siete clases del dominio;
+  \item creación de atributos y operaciones;
+  \item definición de tipos primitivos y \texttt{DateTime};
+  \item configuración de visibilidad privada y pública;
+  \item creación de generalizaciones, asociaciones, agregación y composición;
+  \item asignación de multiplicidades;
+  \item organización visual del diagrama;
+  \item revisión de elementos temporales y nombres inconsistentes;
+  \item elaboración de tablas de clases, relaciones y trazabilidad;
+  \item explicación del modelo durante la exposición.
+\end{enumerate}
+
+Esta contribución demuestra que el modelo no fue copiado de un tutorial genérico, sino construido para el PFC y preparado para funcionar como origen de generación.
+
+\section{Conclusiones}
+La calidad del modelo UML condiciona directamente la calidad de la salida. Un tipo incorrecto, una operación sin retorno o una relación mal orientada puede producir código incompleto o confuso. El modelo del sistema de terapias físicas contiene siete clases relevantes y representa un flujo coherente desde el usuario hasta la evaluación del progreso.
+
+La normalización permitió identificar y corregir nombres temporales, convenciones inconsistentes y posibles ambigüedades. Las relaciones seleccionadas expresan diferentes grados de dependencia: la herencia concentra atributos comunes, las asociaciones vinculan actores y planes, la agregación permite reutilizar ejercicios y la composición representa partes controladas por el plan o la sesión.
+
+El aporte de Frixon constituye la base del proceso MDD. Sin un modelo correcto no es posible demostrar una generación fiable, establecer trazabilidad ni realizar un roundtrip controlado.
+
+
+\appendices
+\section{Procedimiento de construcción en Umbrello}
+La siguiente secuencia resume el procedimiento reproducible que Frixon debe conocer y explicar:
+\begin{enumerate}
+  \item crear el diagrama dentro de \textit{Logical View};
+  \item crear las siete clases como elementos \textit{Class};
+  \item registrar \texttt{DateTime} dentro de \textit{Datatypes};
+  \item añadir cada atributo indicando nombre, tipo y visibilidad \textit{Private};
+  \item añadir cada operación indicando retorno y visibilidad \textit{Public};
+  \item agregar parámetros mediante \textit{New Parameter};
+  \item crear generalización haciendo clic primero en la clase hija y luego en \texttt{Usuario};
+  \item crear asociaciones y configurar nombre y multiplicidad desde \textit{Properties};
+  \item ubicar el rombo blanco de agregación junto a \texttt{PlanTerapia};
+  \item ubicar los rombos negros de composición junto al elemento que representa el todo;
+  \item dejar vacíos los nombres de roles si no se necesitan para la generación;
+  \item agrandar las cajas y añadir puntos de control para evitar cruces;
+  \item guardar el archivo nativo y exportar una imagen legible.
+\end{enumerate}
+
+\section{Lista de verificación del modelo}
+\begin{longtable}{L{8.8cm}C{2.3cm}L{3cm}}
+\caption{Checklist de calidad del modelo de origen}\\
+\toprule
+\textbf{Comprobación} & \textbf{Estado esperado} & \textbf{Evidencia} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Comprobación} & \textbf{Estado esperado} & \textbf{Evidencia} \\
+\midrule
+\endhead
+Existen al menos seis clases del PFC. & Cumple & Siete clases. \\
+Cada atributo posee tipo. & Cumple & Propiedades de atributos. \\
+Cada operación posee retorno. & Cumple & Firmas UML. \\
+Los parámetros tienen nombre y tipo. & Cumple & Operaciones del modelo. \\
+Los atributos son privados. & Cumple & Símbolo ``-''. \\
+Las operaciones son públicas. & Cumple & Símbolo ``+''. \\
+Las generalizaciones apuntan a Usuario. & Cumple & Triángulo vacío. \\
+Las asociaciones tienen multiplicidad. & Cumple & 1, 0..*, 1..*, 0..1. \\
+El rombo de agregación está en el todo. & Cumple & PlanTerapia--Ejercicio. \\
+Los rombos de composición están en el todo. & Cumple & Plan--Sesión y Sesión--Evaluación. \\
+No existen nombres temporales. & Debe corregirse & Eliminar \texttt{new\_attribute}. \\
+Los nombres siguen una convención uniforme. & Debe revisarse & camelCase sin guiones bajos. \\
+El archivo nativo está en GitHub. & Obligatorio & Carpeta \texttt{modelo/}. \\
+\bottomrule
+\end{longtable}
+
+\section{Mejoras futuras del modelo}
+El modelo puede evolucionar sin afectar el alcance de la demostración actual. Entre las mejoras posibles se encuentran:
+\begin{itemize}
+  \item incorporar enumeraciones para el estado del plan y de la sesión;
+  \item representar una clase \texttt{DetallePlanEjercicio} si se necesita configurar repeticiones específicas por plan;
+  \item separar los datos de autenticación de la información personal;
+  \item agregar restricciones sobre nivel de dolor, fechas y porcentajes;
+  \item modelar una máquina de estados para \texttt{PlanTerapia};
+  \item añadir un diagrama de secuencia para registrar una sesión;
+  \item incorporar estereotipos de persistencia solo si el generador los utiliza.
+\end{itemize}
+
+Estas propuestas no deben agregarse por relleno. Cada elemento futuro debe corresponder a un requisito y aportar a la comprensión o generación.
+
+\section{Guion personal para Frixon}
+La exposición del modelo puede organizarse de la siguiente manera:
+\begin{enumerate}
+  \item presentar el alcance y justificar las siete clases;
+  \item mostrar que \texttt{Paciente} y \texttt{Fisioterapeuta} heredan de \texttt{Usuario};
+  \item explicar por qué los atributos son privados y los métodos públicos;
+  \item aclarar parámetros como \texttt{paciente:Paciente} y \texttt{ejercicio:Ejercicio};
+  \item explicar asociación, agregación y composición usando ejemplos del dominio;
+  \item interpretar las multiplicidades;
+  \item señalar las correcciones realizadas para normalizar el modelo;
+  \item entregar el hilo a Angelo: ``Con el modelo validado, ahora se generan las clases C\#.''
+\end{enumerate}
+
+\section{Preguntas que Frixon debe dominar}
+\begin{enumerate}
+  \item \textbf{¿Por qué \texttt{duracionMinutos} puede repetirse?} Porque pertenece a clases diferentes y representa conceptos distintos.
+  \item \textbf{¿Por qué un ejercicio es agregación y una sesión composición?} El ejercicio puede reutilizarse; la sesión se gestiona como parte del plan específico.
+  \item \textbf{¿Qué significa \texttt{0..1}?} Puede no existir una evaluación todavía o existir una sola.
+  \item \textbf{¿Por qué no se repiten nombres y correo en Paciente?} Se heredan de Usuario.
+  \item \textbf{¿Qué ocurre si una operación no tiene retorno?} El código generado puede ser ambiguo o no compilar según la firma.
+\end{enumerate}
+
+\printbibliography[title={Referencias}]
+\end{document}
