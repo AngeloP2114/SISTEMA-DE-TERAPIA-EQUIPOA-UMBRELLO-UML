@@ -1,0 +1,314 @@
+\input{preambulo_formato_final}
+\begin{document}
+\CaratulaIndividual{INVESTIGACIÓN INDIVIDUAL - ANGELO ZAMBRANO}{ZAMBRANO MOYA ANGELO PAUL}{Introducción general, configuración del generador, generación C\#, verificación, roundtrip y coordinación técnica del repositorio.}
+
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Resumen}
+Esta investigación documenta la contribución de Angelo Zambrano al ciclo de desarrollo dirigido por modelos aplicado al Sistema Inteligente de Control y Seguimiento de Terapia Física. El trabajo se concentra en la transición desde el modelo UML construido en Umbrello UML Modeller hacia código fuente C\#, la configuración del asistente de generación, la verificación de los archivos producidos, la diferenciación entre código generado y código manual, y el cierre del ciclo mediante una regeneración controlada. La evidencia práctica incluye la selección explícita de siete clases del dominio, la configuración del lenguaje C\#, la definición de la carpeta de salida, el estado exitoso de generación para cada clase y la integración de los archivos en Visual Studio. También se analiza una incidencia real ocurrida durante las primeras pruebas: la repetición de la clase \texttt{Ejercicio} en todos los archivos debido al uso incorrecto de la opción de encabezados. La investigación concluye que Umbrello aporta una generación estructural útil y trazable, pero que no reemplaza la implementación de reglas de negocio, las pruebas ni la revisión humana. El aporte de Angelo abarca además la introducción del trabajo, la preparación de la demostración, la política de regeneración y la organización técnica necesaria para reproducir el proceso desde GitHub.
+
+\section{Introducción}
+La Ingeniería Dirigida por Modelos plantea que los modelos de software deben desempeñar un papel activo durante el desarrollo y no limitarse a ser diagramas elaborados para la documentación. En este enfoque, la estructura formal representada mediante UML puede ser procesada por herramientas capaces de generar artefactos textuales, entre ellos código fuente. Esta transformación reduce la repetición de tareas mecánicas, mejora la uniformidad de la estructura y permite comprobar de manera directa la correspondencia entre el diseño y la implementación \cite{Schmidt2006,Selic2003,Brambilla2017}.
+
+La actividad desarrollada por el Equipo A parte de un subsistema del PFC de terapias físicas. El modelo contiene las clases \texttt{Usuario}, \texttt{Paciente}, \texttt{Fisioterapeuta}, \texttt{PlanTerapia}, \texttt{Ejercicio}, \texttt{SesionTerapia} y \texttt{EvaluacionProgreso}. A partir de este modelo se ejecuta una transformación modelo-a-texto hacia C\#, se incorporan los archivos al entorno de Visual Studio y se documentan sus límites. La guía de evaluación exige que la generación sea verificable, que el equipo distinga el código producido por la herramienta del código añadido manualmente, que exista correspondencia modelo--código y que se realice una regeneración controlada \cite{GuiaMDD2026}.
+
+Dentro de la distribución grupal, Angelo asumió el bloque de mayor responsabilidad operativa: introducir el problema, explicar el propósito de la generación, preparar el entorno, configurar el asistente, ejecutar la generación, revisar los archivos, coordinar la verificación en C\# y explicar el manejo de la regeneración. Esta función es crítica porque conecta las actividades previas de fundamentación y modelado con la evidencia práctica que demuestra que Umbrello posee capacidad real de producir código.
+
+\section{Fundamento de la generación de código}
+\subsection{Transformación modelo-a-texto}
+El proceso realizado corresponde a una transformación M2T, es decir, una transformación en la que el artefacto de entrada es un modelo y el resultado es texto estructurado. En el caso analizado, las clases UML son interpretadas por el generador interno de Umbrello y se convierten en declaraciones C\#. Los nombres de las clases producen archivos, los atributos producen campos, las operaciones producen firmas de métodos y la generalización produce herencia en el lenguaje objetivo. El estándar MOFM2T establece una base conceptual para este tipo de transformaciones, aunque Umbrello emplea su propio motor integrado \cite{OMG2008MOFM2T,KDEUmbrelloCodegen}.
+
+La transformación no debe confundirse con la generación de una aplicación terminada. La salida contiene principalmente estructuras del dominio. Una operación UML como \texttt{calcularProgreso(...): double} puede convertirse en una firma de C\#, pero la fórmula que determina el progreso requiere implementación. Esta diferencia es esencial para evaluar honestamente la herramienta y evita presentar esqueletos estructurales como un sistema completamente funcional.
+
+\subsection{Forward engineering y roundtrip controlado}
+La generación ejecutada constituye \textit{forward engineering}: el modelo es la fuente desde la que se produce código. Umbrello también dispone de funciones de importación, pero la sincronización bidireccional no debe equipararse a la de plataformas comerciales avanzadas. La documentación oficial indica que, si un archivo ya existe, el generador puede sobrescribirlo, omitirlo o producir otro nombre; no realiza una fusión semántica general de cambios manuales \cite{KDEUmbrelloCodegen,KDEUmbrelloSettings}.
+
+Por esta razón, el cierre del ciclo se diseñó como un roundtrip controlado y unidireccional: se modifica un elemento UML, se regenera la clase afectada y se verifica que el cambio aparezca en el archivo correspondiente. Esta forma de trabajo conserva la trazabilidad y evita afirmar una sincronización que la herramienta no garantiza.
+
+\section{Preparación del entorno}
+\subsection{Modelo de entrada}
+Antes de utilizar el generador se revisó que las siete clases fueran reconocidas como clases del dominio y que los tipos auxiliares, como \texttt{DateTime} y \texttt{void}, no se seleccionaran como unidades de generación. También se verificó la visibilidad: los atributos permanecieron privados y las operaciones públicas. Esta decisión representa el principio de encapsulamiento y facilita que el código generado mantenga una estructura orientada a objetos coherente.
+
+La revisión previa incluyó los siguientes puntos:
+\begin{itemize}
+  \item nombres de clases sin espacios ni caracteres que dificulten la generación;
+  \item atributos con tipo explícito;
+  \item operaciones con tipo de retorno;
+  \item parámetros definidos mediante nombre y tipo;
+  \item herencia de \texttt{Paciente} y \texttt{Fisioterapeuta} respecto de \texttt{Usuario};
+  \item relaciones todo--parte representadas mediante agregación o composición;
+  \item eliminación o renombrado de elementos temporales como \texttt{new\_attribute}.
+\end{itemize}
+
+\subsection{Dependencias de verificación}
+Para revisar el resultado se utilizó un proyecto de consola C\# en Visual Studio. El generador produce archivos \texttt{.cs}, mientras que el entorno .NET proporciona el compilador y el punto de entrada necesario para ejecutar una unidad mínima. El comando \texttt{dotnet run} o la opción de ejecución de Visual Studio compilan y ejecutan el proyecto, pero requieren que exista un archivo de inicio, normalmente \texttt{Program.cs} \cite{MicrosoftDotnetRun}.
+
+Es importante aclarar que \texttt{Program.cs} no fue generado por Umbrello. Se añadió manualmente para validar la integración de las clases. Esta separación se documentó para cumplir el requisito ético de no presentar código manual como salida automática.
+
+\section{Selección de clases en el asistente}
+El asistente \textit{Code Generation Wizard} permite controlar qué elementos del modelo producirán archivos. La Figura~\ref{fig:seleccion} muestra la selección real utilizada durante la generación. En la columna derecha aparecen las siete clases del dominio; en la izquierda permanecen \texttt{DateTime} y \texttt{void}, que son tipos auxiliares y no deben convertirse en archivos independientes.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.68\textwidth]{figuras/seleccion_clases.png}
+\caption{Selección de las siete clases del dominio en el asistente de Umbrello.}
+\label{fig:seleccion}
+\end{figure}
+
+La selección explícita aporta dos evidencias. Primero, confirma que el código procede del modelo real y no de archivos preparados manualmente. Segundo, permite reproducir el proceso: cualquier integrante puede abrir el modelo, seleccionar las mismas clases y obtener el mismo conjunto de archivos.
+
+\begin{table}[H]
+\centering
+\caption{Clases seleccionadas y archivo esperado}
+\begin{tabularx}{\textwidth}{L{5cm}L{5cm}X}
+\toprule
+\textbf{Clase UML} & \textbf{Archivo esperado} & \textbf{Responsabilidad principal} \\
+\midrule
+Usuario & Usuario.cs & Datos comunes y acceso al sistema. \\
+Paciente & Paciente.cs & Información clínica y consulta de progreso. \\
+Fisioterapeuta & Fisioterapeuta.cs & Evaluación y creación de planes. \\
+PlanTerapia & PlanTerapia.cs & Organización del tratamiento. \\
+Ejercicio & Ejercicio.cs & Actividades, repeticiones y duración. \\
+SesionTerapia & SesionTerapia.cs & Registro y seguimiento de cada sesión. \\
+EvaluacionProgreso & EvaluacionProgreso.cs & Medición del progreso del paciente. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Configuración del generador C\#}
+La Figura~\ref{fig:config} registra las opciones reales del asistente. El lenguaje seleccionado fue C\#. La ruta \textit{Write all generated files to folder} corresponde al destino donde Umbrello crea los archivos. La opción \textit{Include heading files from folder} aparece desactivada, aunque el campo conserva una ruta previa; al estar la casilla sin marcar, esa ruta no debe intervenir en la generación.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.64\textwidth]{figuras/configuracion_csharp.png}
+\caption{Configuración de C\#, carpeta de salida y política de sobrescritura.}
+\label{fig:config}
+\end{figure}
+
+En la corrida capturada se utilizó la política \textit{Overwrite}. Esta configuración reemplaza archivos del mismo nombre y es útil cuando se desea regenerar completamente una salida. No obstante, para una demostración académica o un proyecto con modificaciones manuales, la política recomendada es \textit{Ask}, porque obliga a confirmar cada sustitución y disminuye el riesgo de pérdida accidental. La diferencia se explica en la Tabla~\ref{tab:overwrite}.
+
+\begin{table}[H]
+\centering
+\caption{Políticas disponibles ante archivos existentes}
+\label{tab:overwrite}
+\begin{tabularx}{\textwidth}{L{4cm}X L{4cm}}
+\toprule
+\textbf{Política} & \textbf{Comportamiento} & \textbf{Uso recomendado} \\
+\midrule
+Overwrite & Reemplaza el archivo existente. & Regeneración limpia de código sin ediciones manuales. \\
+Ask & Solicita confirmación antes de reemplazar. & Demostraciones y proyectos con revisión humana. \\
+Use a different name & Conserva el archivo y crea otra versión. & Comparaciones antes/después o respaldo. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{La diferencia entre las dos rutas}
+La primera ruta es obligatoria: identifica la carpeta de salida. La segunda ruta no es una carpeta adicional de generación. Su propósito es insertar encabezados comunes, por ejemplo una licencia o aviso institucional, al inicio de cada archivo. Activarla con una carpeta que contenga código provoca que ese contenido se copie repetidamente. Esta distinción fue uno de los aprendizajes técnicos principales de la práctica.
+
+\section{Ejecución y evidencia de generación}
+La Figura~\ref{fig:generacion} combina dos evidencias. En la parte superior, el asistente informa \textit{Code Generated} para cada clase; en la parte inferior, el explorador de archivos muestra los siete archivos \texttt{.cs}. La coincidencia entre la lista del asistente y la carpeta de salida permite afirmar que Umbrello realizó la generación de forma verificable.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.74\textwidth]{figuras/generacion_exitosa.png}
+\caption{Estado exitoso del generador y archivos C\# producidos.}
+\label{fig:generacion}
+\end{figure}
+
+El proceso puede describirse como la cadena:
+\[
+\text{modelo UML} \rightarrow \text{selección de clases} \rightarrow \text{configuración C\#} \rightarrow \text{archivos .cs}
+\]
+
+La evidencia resulta más sólida que una muestra aislada de código, porque registra el momento de generación y los archivos de salida. Además, el repositorio debe conservar el modelo nativo, las capturas, la configuración y el código para que otra persona pueda repetir la corrida, tal como exige la guía \cite{GuiaMDD2026}.
+
+\section{Integración y verificación en Visual Studio}
+La Figura~\ref{fig:vs} muestra los archivos incorporados al proyecto de consola. Se observan las siete clases producidas por Umbrello y el archivo \texttt{Program.cs}. Esta estructura permite diferenciar claramente el dominio generado de la unidad manual de prueba.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.58\textwidth]{figuras/visual_studio_archivos.png}
+\caption{Archivos generados incorporados a un proyecto de verificación en Visual Studio.}
+\label{fig:vs}
+\end{figure}
+
+\subsection{Código generado y código manual}
+La clasificación adoptada se presenta a continuación:
+\begin{itemize}
+  \item \textbf{Generado:} archivos de las siete clases, campos, firmas de operaciones y herencia derivada del modelo.
+  \item \textbf{Manual de verificación:} \texttt{Program.cs}, creación de objetos, mensajes en consola y lógica mínima necesaria para ejecutar una prueba.
+  \item \textbf{Ajustes mínimos:} retornos de prueba para métodos no \texttt{void}, cuando el generador produce una firma sin cuerpo funcional.
+\end{itemize}
+
+La distinción evita una interpretación incorrecta del resultado. La herramienta genera una línea base estructural, no la totalidad de la aplicación.
+
+\subsection{Correspondencia modelo--código}
+\begin{table}[H]
+\centering
+\caption{Trazabilidad entre elementos UML y C\#}
+\begin{tabularx}{\textwidth}{L{4cm}L{5.2cm}X}
+\toprule
+\textbf{Elemento UML} & \textbf{Artefacto C\#} & \textbf{Comprobación} \\
+\midrule
+Clase Paciente & \texttt{Paciente.cs} & Archivo independiente con la declaración de clase. \\
+Generalización a Usuario & \texttt{Paciente : Usuario} & La herencia refleja el triángulo de generalización. \\
+\texttt{edad:int} & Campo entero privado & Conserva nombre, tipo y visibilidad. \\
+\texttt{actualizarDiagnostico(...):void} & Método público & Conserva la firma y el parámetro. \\
+Clase PlanTerapia & \texttt{PlanTerapia.cs} & Contiene fechas, objetivo, estado y operaciones. \\
+Parámetro \texttt{ejercicio:Ejercicio} & Parámetro de tipo \texttt{Ejercicio} & Recibe un objeto completo del dominio. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Unidad mínima de ejecución}
+Una prueba manual puede instanciar clases y utilizar una operación de progreso. El siguiente ejemplo no debe presentarse como generado; funciona únicamente como evidencia de integración.
+
+\begin{lstlisting}[caption={Unidad manual mínima para probar las clases generadas}]
+// [MANUAL] Punto de entrada para verificacion.
+Paciente paciente = new Paciente();
+Fisioterapeuta fisioterapeuta = new Fisioterapeuta();
+PlanTerapia plan = new PlanTerapia();
+Ejercicio ejercicio = new Ejercicio();
+SesionTerapia sesion = new SesionTerapia();
+
+fisioterapeuta.evaluarPaciente(paciente);
+plan.agregarEjercicio(ejercicio);
+sesion.finalizarSesion();
+
+Console.WriteLine("Clases generadas integradas correctamente.");
+\end{lstlisting}
+
+\section{Incidencia técnica: clase Ejercicio repetida}
+Durante una prueba inicial, la clase \texttt{Ejercicio} apareció al comienzo de varios archivos y, posteriormente, aparecía la clase que realmente correspondía al archivo. El problema no era el parámetro \texttt{ejercicio:Ejercicio}; esa firma es válida porque el primer término es el nombre de la variable y el segundo es su tipo. La causa estaba en la opción de encabezados.
+
+Se había señalado una carpeta con código como origen de encabezados. Umbrello interpretó el contenido como texto común y lo insertó en todas las salidas. La corrección se realizó mediante los siguientes pasos:
+\begin{enumerate}
+  \item crear una carpeta de salida nueva y vacía;
+  \item desmarcar \textit{Include heading files from folder};
+  \item conservar únicamente la ruta \textit{Write all generated files to folder};
+  \item regenerar las siete clases;
+  \item comprobar que \texttt{public class Ejercicio} apareciera solo en \texttt{Ejercicio.cs}.
+\end{enumerate}
+
+Este incidente demuestra por qué la configuración forma parte de la evaluación. Una herramienta puede generar código incorrecto no por un error en el modelo, sino por una opción del generador mal interpretada.
+
+\section{Roundtrip controlado}
+El cambio propuesto para cerrar el ciclo consiste en agregar un atributo clínico a \texttt{EvaluacionProgreso}, por ejemplo:
+\begin{center}
+\texttt{- fatiga: int}
+\end{center}
+
+El procedimiento es:
+\begin{enumerate}
+  \item capturar la clase antes del cambio;
+  \item agregar el atributo privado en Umbrello;
+  \item seleccionar solo \texttt{EvaluacionProgreso} en el asistente;
+  \item regenerar en la misma carpeta con política controlada;
+  \item abrir \texttt{EvaluacionProgreso.cs};
+  \item verificar la aparición del nuevo campo;
+  \item compilar nuevamente el proyecto.
+\end{enumerate}
+
+El cambio es más significativo que una modificación ortográfica porque amplía la información clínica del modelo. La evidencia antes/después conecta directamente la evolución del modelo con el archivo generado.
+
+\section{Evaluación de calidad}
+\begin{table}[H]
+\centering
+\caption{Evaluación del resultado generado}
+\begin{tabularx}{\textwidth}{L{4cm}C{2.2cm}X}
+\toprule
+\textbf{Criterio} & \textbf{Resultado} & \textbf{Análisis} \\
+\midrule
+Correspondencia estructural & Alta & Se producen clases, campos, métodos y herencia acordes al modelo. \\
+Completitud funcional & Baja & Las reglas de negocio y persistencia no son generadas. \\
+Legibilidad & Media--alta & El código se organiza por clase, aunque depende de las opciones de formato. \\
+Compilabilidad & Condicionada & Los métodos con retorno pueden necesitar implementación mínima. \\
+Trazabilidad & Alta & Es posible relacionar clases y miembros con su origen UML. \\
+Seguridad ante regeneración & Media & Debe controlarse la sobrescritura y separar el código manual. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La calidad del código generado no puede medirse solo por la ausencia de errores sintácticos. También debe evaluarse la fidelidad al modelo, la facilidad de mantenimiento, la claridad de los límites y la reproducibilidad. La investigación sobre MDE identifica precisamente la evolución, la interoperabilidad y la adopción como desafíos persistentes \cite{Bucchiarone2020,Whittle2014}.
+
+\section{Reproducibilidad, ética y repositorio}
+El repositorio público constituye la evidencia técnica central. Debe contener el modelo nativo, las capturas, el código generado, la unidad manual de verificación, el informe y un README con instrucciones. La contribución individual de Angelo se demuestra mediante commits propios sobre configuración, generación, verificación, documentación y preparación de la exposición.
+
+Los criterios éticos aplicados son:
+\begin{itemize}
+  \item no declarar como generado el archivo \texttt{Program.cs};
+  \item identificar ajustes manuales;
+  \item no ocultar errores de configuración;
+  \item revisar el código antes de su uso;
+  \item conservar la trazabilidad y el historial de cambios;
+  \item no atribuir a Umbrello lógica que fue implementada por el equipo.
+\end{itemize}
+
+\section{Aporte personal de Angelo}
+El aporte individual comprende:
+\begin{enumerate}
+  \item redacción de la introducción y presentación del propósito del ciclo UML--código;
+  \item selección y verificación de C\# como lenguaje objetivo;
+  \item ejecución del \textit{Code Generation Wizard};
+  \item análisis de las opciones de carpeta y encabezados;
+  \item diagnóstico y corrección del error de \texttt{Ejercicio} repetido;
+  \item incorporación de archivos a Visual Studio;
+  \item diferenciación entre código generado y manual;
+  \item diseño de la unidad mínima de verificación;
+  \item planificación del roundtrip controlado;
+  \item organización de la evidencia técnica y coordinación del repositorio.
+\end{enumerate}
+
+Estas tareas concentran la parte operativa y demostrativa exigida por la rúbrica, por lo que justifican que Angelo participe en la introducción, el segmento principal de generación y el cierre técnico de la exposición.
+
+\section{Conclusiones}
+Umbrello demostró capacidad real para transformar un modelo UML del PFC en un conjunto de archivos C\#. La generación fue verificable mediante la selección de clases, la configuración del asistente, el estado exitoso de cada elemento y la presencia de los archivos en la carpeta de salida. La integración en Visual Studio confirmó que el resultado puede utilizarse como base de un proyecto.
+
+El mayor aprendizaje fue comprender que la generación no elimina la responsabilidad del desarrollador. Las firmas y estructuras provienen del modelo, mientras que la lógica, las pruebas y el punto de entrada deben completarse. La incidencia del encabezado mostró que una configuración incorrecta puede afectar todos los archivos, y que el conocimiento de las opciones es tan importante como el diagrama.
+
+Finalmente, el valor de MDD para el sistema de terapias físicas se encuentra en la consistencia estructural, la trazabilidad y la reducción de trabajo repetitivo. El proceso no sustituye la ingeniería de software; proporciona una base controlada sobre la que el equipo puede implementar las reglas clínicas y tecnológicas del PFC.
+
+
+\appendices
+\section{Guion personal para la demostración}
+La participación de Angelo durante la exposición puede organizarse en un hilo continuo que conecte teoría, configuración y evidencia. El siguiente guion permite demostrar dominio sin limitarse a presionar el botón de generación.
+
+\begin{longtable}{C{1.5cm}L{4.4cm}L{8.1cm}}
+\caption{Secuencia recomendada para la intervención de Angelo}\\
+\toprule
+\textbf{Tiempo} & \textbf{Acción visible} & \textbf{Explicación} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Tiempo} & \textbf{Acción visible} & \textbf{Explicación} \\
+\midrule
+\endhead
+0:00--0:40 & Presentar el objetivo. & ``El modelo UML será transformado en archivos C\# y luego verificado en Visual Studio.'' \\
+0:40--1:20 & Mostrar el modelo. & Identificar clases, tipos, herencia y operaciones que se esperan en el código. \\
+1:20--2:10 & Abrir el asistente. & Explicar por qué se usa \textit{Code Generation Wizard} y no una exportación de imagen. \\
+2:10--2:50 & Seleccionar clases. & Confirmar que \texttt{DateTime} y \texttt{void} no se generan como clases. \\
+2:50--3:40 & Configurar C\#. & Diferenciar la carpeta de salida y la opción de encabezados. \\
+3:40--4:20 & Generar. & Interpretar el estado \textit{Code Generated} de cada clase. \\
+4:20--5:10 & Abrir Visual Studio. & Comparar \texttt{Paciente} y \texttt{PlanTerapia} con el modelo. \\
+5:10--6:00 & Evaluar calidad. & Diferenciar estructura generada, lógica manual y limitaciones. \\
+6:00--7:00 & Roundtrip. & Agregar \texttt{fatiga:int}, regenerar y mostrar el cambio. \\
+\bottomrule
+\end{longtable}
+
+\section{Preguntas técnicas que Angelo debe dominar}
+\begin{enumerate}
+  \item \textbf{¿Por qué la salida no se ejecuta directamente?} Porque Umbrello genera clases del dominio, pero no crea necesariamente un punto de entrada ni la lógica completa.
+  \item \textbf{¿Qué diferencia existe entre la carpeta de salida y la carpeta de encabezados?} La primera recibe los archivos generados; la segunda inserta contenido común al inicio de cada archivo y normalmente debe permanecer desactivada.
+  \item \textbf{¿Por qué \texttt{ejercicio:Ejercicio} es correcto?} Porque el parámetro se llama \texttt{ejercicio} y su tipo es la clase \texttt{Ejercicio}.
+  \item \textbf{¿Qué evidencia prueba que el código fue generado?} La selección de clases, el estado exitoso del asistente, la carpeta de salida y la correspondencia con el modelo.
+  \item \textbf{¿Qué ocurre al regenerar?} Dependiendo de la política, el archivo se sobrescribe, se conserva o se genera con otro nombre; no existe una fusión automática general.
+  \item \textbf{¿Cuál fue el error más importante?} La inserción de \texttt{Ejercicio} como encabezado común por una configuración incorrecta.
+  \item \textbf{¿Qué parte es manual?} \texttt{Program.cs}, las reglas de negocio y los retornos mínimos necesarios para compilar.
+\end{enumerate}
+
+\printbibliography[title={Referencias}]
+\end{document}
